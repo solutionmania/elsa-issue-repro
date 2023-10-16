@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="3.0.0-preview.775" />
-    <PackageReference Include="Elsa.EntityFrameworkCore.SqlServer" Version="3.0.0-preview.775" />
+    <PackageReference Include="Elsa" Version="3.0.0-preview.785" />
+    <PackageReference Include="Elsa.EntityFrameworkCore.SqlServer" Version="3.0.0-preview.785" />
   </ItemGroup>
 
 </Project>

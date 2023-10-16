@@ -4,6 +4,7 @@ using Elsa.Extensions;
 using Elsa.Workflows.Core.Activities;
 using Elsa.Workflows.Core.Contracts;
 using Elsa.Workflows.Core.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 // Setup service container.
@@ -25,6 +26,9 @@ services.AddElsa(elsa =>
 // Build the service container.
 var serviceProvider = services.BuildServiceProvider();
 
+// Run migrations.
+await RunMigrationsAsync<RuntimeElsaDbContext>();
+
 // Define a simple workflow that writes a message to the console.
 var workflow = new Sequence
 {
@@ -41,3 +45,10 @@ var workflowRunner = serviceProvider.GetRequiredService<IWorkflowRunner>();
 // Execute the workflow.
 await workflowRunner.RunAsync(workflow);
 
+async Task RunMigrationsAsync<TDbContext>() where TDbContext : DbContext
+{
+    var dbContextFactory = serviceProvider.GetRequiredService<IDbContextFactory<TDbContext>>();
+    await using var dbContext = await dbContextFactory.CreateDbContextAsync();
+    await dbContext.Database.MigrateAsync();
+    await dbContext.DisposeAsync();
+}
